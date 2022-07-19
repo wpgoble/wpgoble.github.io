@@ -56,9 +56,19 @@
 						<!-- Content -->
 							<section id="content">
 								<!-- <a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a> -->
-								<h3>Sample R Code</h3>
+								<h3></h3>
 								<pre>
 									<code>
+years <- c("2019", "2020", "2021")
+names <- c("France", "United Kingdom", "Italy", "Greece", "Ireland")
+
+last_year <- df[df$YEAR %in% years & df$STATE_NAME %in% names, ]
+
+last_year <- last_year %>%
+	group_by(YEAR, STATE_NAME) %>%
+	summaries(Total = sum(FLT_DEP_1, FLT_ARR_1)) %>%
+	ungroup()
+
 departure %>% 
   newggslopegraph(Times = YEAR,
                   Measurement = Total,
