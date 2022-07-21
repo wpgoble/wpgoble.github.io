@@ -49,27 +49,58 @@
 						<header class="major">
 							<h2>Machine Learning</h2>
 							<p>For machine learning I've been using the Scikit Learn Python library. <br />
-								This page will contain highlights and different techniques that I've learned <br>
-							exploration of data science.</p>
+								This page will contain highlights and different data science techniques.</p>
 						</header>
 
 						<!-- Content -->
 							<section id="content">
 								<!-- <a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a> -->
-								<h3>Sample Python Code</h3>
+								<h3>Predicting Heart Attcks using Machine Learning</h3>
+								<p>During my time in graduate school one of my courses worked on the classic machine 
+									learning example of trying to predict if a patient would have a heart attack based. 
+									The exact assignment was to split our given dataset into train and test sets, and then 
+									design a formula that can calculate whether or not a person will have a heart attack. 
+									The tick our professor gave us was that we were not allowed to use preexisting models. 
+									The assignment was to basically create a Random Forest Classifier, without creating a 
+									Random Forest Classifier. After creating our algorithm we needed to calculate the 
+									accuracy of our algorithm with the test set. The basic structure of my algorithm was 
+									to divide the data into the two gender options, and then consider factors like chest pain,
+									cholesterol level, and the number of defects or vessels they had. The overall structure of 
+									this algorithm was a detailed if/else block. After calculating the accuracy my algorithm 
+									had an accuracy score of 76.19. <br>After graduating I decided to revist this assignment 
+									and see if I could generate a better score using the Scikit-Learn RandomForestClassifier. 
+									This post is walking through my workflow when working with this dataset and classifier. 
+									First, we load the data and examine it's contents using methods like <code>head()</code>, 
+									<code>info()</code>, and <code>describe()</code>. Doing this gave me an idea about the 
+									type of data that I'm working with, and allowed me to identify the target column I want 
+									to predict. Next, we create our model and train and test set.</p>
 								<pre>
 									<code>
-import numpy as np
-import pandas as pd
+## Creating train and test datasets.
+X = health.drop("Result", axis = 1)
+y = health["Result"]
 
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 
-heart = pd.read_csv('../data/heart-disease.csv')
-heart.head()
+## Model creation
+model = RandomForestClassifier(n_estimators = 100)
+# We can view the default parameters with the following:
+model.get_params()
 								</code>
 							</pre>
+							<p>After seperating the train and test datasets, we can train our model with the <code>fit</code> method, 
+								and then start predicting outcomes with <code>model.predict(X_test)</code>. After performing these steps 
+								we are able to determine the accuracy of our results in the following way.</p>
+							<pre>
+								<code>
+model.score(X_train, y_train)	# The score our model has with the train dataset, should be 1.0
+model.score(X_test, y_test)		# The score our model has with the test dataset, in this case is was 0.878
+print(accuracy_score(y_test, y_prediction)) # Similar result to model.score(X_test, y_test)
 
+# The following includes the precision, recall, and F1-score, which is calculated from precision and recall
+print(classification_report(y_test, y_predictions))
+								</code>
+							</pre>
 					</div>
 				</div>
 
